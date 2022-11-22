@@ -5,10 +5,10 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           ivsc-firmware
-Summary:        Binaries firmware for Intel iVSC
+Summary:        Firmware for Intel iVSC
 Version:        0.0
 Release:        1.%{commitdate}git%{shortcommit}%{?dist}
-License:        Proprietory
+License:        Proprietary
 
 Source0: https://github.com/intel/%{name}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 
@@ -19,9 +19,7 @@ Provides:       %{name} = %{version}-%{release}
 ExclusiveArch:  x86_64
 
 %description
-This provides the necessary binaries for Intel iVSC.
-
-This package contains the binary firmware for %{name}.
+This provides the necessary firmware for Intel iVSC.
 
 %prep
 
@@ -61,4 +59,4 @@ install -D -m 0644 %{name}-%{commit}/firmware/ivsc_skucfg_himx11b1_0_1.bin %{bui
 
 %changelog
 * Tue Nov 15 2022 Kate Hsuan <hpa@redhat.com> - 0.0
-- First commit
+- Firmware for Intel iVSC
