@@ -5,15 +5,13 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           ivsc-firmware
-Summary:        Firmware for Intel iVSC
+Summary:        Intel iVSC firmware
 URL:            https://github.com/intel/ivsc-firmware
 Version:        0.0
-Release:        2.%{commitdate}git%{shortcommit}%{?dist}
+Release:        3.%{commitdate}git%{shortcommit}%{?dist}
 License:        Proprietary
 
 Source0:        https://github.com/intel/%{name}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
-
-BuildRequires:  systemd-rpm-macros
 
 ExclusiveArch:  x86_64
 
@@ -21,8 +19,7 @@ ExclusiveArch:  x86_64
 This provides the necessary firmware for Intel iVSC.
 
 %prep
-
-%setup -q -n %{name}-%{commit}
+%autosetup -n %{name}-%{commit}
 
 %build
 # Nothing to build
@@ -51,13 +48,14 @@ install -p -D -m 0644 firmware/ivsc_pkg_ovti01a0_0.bin %{buildroot}%{_prefix}/li
 install -p -D -m 0644 firmware/ivsc_skucfg_himx11b1_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_himx11b1_0_1_a1_prod.bin
 
 %files
-#iVSC firmware
 %license LICENSE
-%dir %{_prefix}/lib/firmware/vsc
 %dir %{_prefix}/lib/firmware/vsc/soc_a1_prod
 %{_prefix}/lib/firmware/vsc/soc_a1_prod/*.bin
 
 %changelog
+* Fri Feb 17 2023 Kate Hsuan <hpa@redhat.com> - 0.0-3.20221102git29c5eff
+- Sepcfile update
+
 * Tue Dec 20 2022 Kate Hsuan <hpa@redhat.com> - 0.0-2.20221102git29c5eff
 - Style and format fixes.
 
