@@ -8,7 +8,7 @@ Name:           ivsc-firmware
 Summary:        Intel iVSC firmware
 URL:            https://github.com/intel/ivsc-firmware
 Version:        0.0
-Release:        3.%{commitdate}git%{shortcommit}%{?dist}
+Release:        4.%{commitdate}git%{shortcommit}%{?dist}
 License:        Proprietary
 
 Source0:        https://github.com/intel/%{name}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
@@ -25,34 +25,24 @@ This provides the necessary firmware for Intel iVSC.
 # Nothing to build
 
 %install
-install -p -D -m 0644 firmware/ivsc_pkg_ovti5678_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti5678_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_ovti2740_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti2740_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_ovti9738_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti9738_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_ovti2740_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti2740_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_ovti02c1_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti02c1_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_fw.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_fw_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_ovti01af_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti01af_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_ovti01a0_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti01a0_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_ovti9734_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti9734_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_hi556_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_hi556_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_ovti01as_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti01as_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_ovti9738_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti9738_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_ovti5678_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti5678_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_ovti02c1_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti02c1_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_ovti01as_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti01as_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_ovti01af_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti01af_0_1_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_himx11b1_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_himx11b1_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_ovti9734_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti9734_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_hi556_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_hi556_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_pkg_ovti01a0_0.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti01a0_0_a1_prod.bin
-install -p -D -m 0644 firmware/ivsc_skucfg_himx11b1_0_1.bin %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_himx11b1_0_1_a1_prod.bin
+mkdir -p %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1
+mkdir -p %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod
+pushd firmware/
+for i in *.bin; do
+  cp -a "$i" %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1/`echo "$i" | sed 's|\.bin|_a1\.bin|'`;
+  cp -a "$i" %{buildroot}%{_prefix}/lib/firmware/vsc/soc_a1_prod/`echo "$i" | sed 's|\.bin|_a1_prod\.bin|'`;
+done
+popd
 
 %files
 %license LICENSE
-%dir %{_prefix}/lib/firmware/vsc/soc_a1_prod
-%{_prefix}/lib/firmware/vsc/soc_a1_prod/*.bin
+%{_prefix}/lib/firmware/vsc/
 
 %changelog
+* Wed Mar 1 2023 Kate Hsuan <hpa@redhat.com> - 0.0-4.20221102git29c5eff
+- Install debug firmware too
+- Simplified firmware installation
+
 * Fri Feb 17 2023 Kate Hsuan <hpa@redhat.com> - 0.0-3.20221102git29c5eff
 - Sepcfile update
 
